@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENTR 485 - Innovating: Creating the Future</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-container {
+            background: #f8f9fa;
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .dropdown select {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown select:hover, .dropdown select:focus {
+            border-color: #2a5298;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        .content {
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #2a5298;
+            border-bottom: 2px solid #2a5298;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: #1e3c72;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        h4 {
+            color: #2a5298;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructor-info {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(240, 147, 251, 0.3);
+        }
+
+        .course-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #2a5298;
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .grading-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .grading-table th,
+        .grading-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .grading-table th {
+            background: #2a5298;
+            color: white;
+            font-weight: 600;
+        }
+
+        .grading-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+
+        .schedule-table th {
+            background: #1e3c72;
+            color: white;
+            font-weight: 600;
+        }
+
+        .schedule-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .week-header {
+            background: #e3f2fd !important;
+            font-weight: bold;
+            color: #1565c0;
+        }
+
+        ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #2a5298;
+        }
+
+        .warning {
+            background: linear-gradient(120deg, #ffeaa7 0%, #fab1a0 100%);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #e17055;
+        }
+
+        a {
+            color: #2a5298;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #1e3c72;
+            text-decoration: underline;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2a5298;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(42, 82, 152, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(42, 82, 152, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                border-radius: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .course-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ENTR 485</h1>
+            <p>Innovating: Creating the Future - Fall 2025</p>
+        </div>
+
+        <div class="nav-container">
+            <div class="dropdown">
+                <select id="sectionSelect" onchange="navigateToSection()">
+                    <option value="overview">Course Overview</option>
+                    <option value="instructor">Instructor Information</option>
+                    <option value="description">Course Description</option>
+                    <option value="outcomes">Learning Outcomes</option>
+                    <option value="policies">Academic Policies</option>
+                    <option value="grading">Grading & Assessments</option>
+                    <option value="schedule">Course Schedule</option>
+                    <option value="emergency">Emergency Procedures</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="overview" class="section active">
+                <h2>Course Overview</h2>
+                <div class="course-info">
+                    <div class="info-card">
+                        <h4>Course Code</h4>
+                        <p>ENTR 485</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Course Title</h4>
+                        <p>Innovating: Creating the Future</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Semester</h4>
+                        <p>Fall 2025</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Meeting Time</h4>
+                        <p>Monday, 8:00 AM - 10:30 AM (Section #19)</p>
+                    </div>
+                </div>
+                
+                <div class="highlight">
+                    <h3>What You'll Learn</h3>
+                    <p>This course provides an experiential experience in innovation and entrepreneurship, teaching you specific methods to assess industries, understand customers and competitors, and translate insights into winning venture ideas.</p>
+                </div>
+
+                <h3>Course Materials</h3>
+                <div class="info-card">
+                    <strong>Required Textbook:</strong><br>
+                    Heidi M. Neck, Christopher P. Neck, Emma L. Murray.<br>
+                    <em>Entrepreneurship: The Practice and Mindset</em><br>
+                    Third Edition. Los Angeles: SAGE, 2025.<br>
+                    ISBN: 978-1-0719-2898-1
+                </div>
+                <p>Additional readings and videos will be assigned on D2L.</p>
+            </div>
+
+            <div id="instructor" class="section">
+                <h2>Instructor Information</h2>
+                <div class="instructor-info">
+                    <h3>Bob Griffin</h3>
+                    <p><strong>Title:</strong> Senior Lecturer, McGuire Center for Entrepreneurship</p>
+                    <p><strong>College:</strong> Eller College of Management, University of Arizona</p>
+                    <p><strong>Email:</strong> Robertgriffin@arizona.edu</p>
+                    <p><strong>Office:</strong> McClelland Hall 202</p>
+                    <p><strong>Office Hours:</strong> By appointment</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>Teaching Assistant</h4>
+                    <p><strong>Chris Duignan</strong></p>
+                    <p><strong>Email:</strong> Cduignan@arizona.edu</p>
+                </div>
+
+                <div class="highlight">
+                    <h3>Communication Policy</h3>
+                    <p>We will answer emails within 24 business hours (M-F, 8-5). Please check the syllabus and related materials before emailing questions. Always use your arizona.edu email address.</p>
+                </div>
+            </div>
+
+            <div id="description" class="section">
+                <h2>Course Description</h2>
+                <p>This course provides an experiential experience in innovation and entrepreneurship. It will teach you specific methods to assess and understand the industry, customers, and competitors for a new venture. You will then learn how to translate those insights into a winning venture idea, a business model, and set of distinctive new products and services.</p>
+
+                <h3>This Course is Ideal For:</h3>
+                <ul>
+                    <li><strong>Future Entrepreneurs:</strong> Students who wish to start their own venture, today or in the future</li>
+                    <li><strong>Corporate Innovators:</strong> Students who want to create new businesses within existing corporations</li>
+                    <li><strong>Social Impact Leaders:</strong> Those interested in non-profits or NGOs who want to develop customer-centric solutions</li>
+                </ul>
+
+                <h3>Course Structure</h3>
+                <div class="highlight">
+                    <h4>Part 1: Ideation</h4>
+                    <ul>
+                        <li>Industry and stakeholder analysis</li>
+                        <li>Creating venture concepts based on customer needs</li>
+                        <li>Designing sustainable business models</li>
+                        <li>Developing product and service strategies</li>
+                        <li>Competitive positioning</li>
+                    </ul>
+                </div>
+
+                <div class="highlight">
+                    <h4>Part 2: Implementation</h4>
+                    <ul>
+                        <li>Customer validation and reality checks</li>
+                        <li>Identifying the right investors</li>
+                        <li>Creating realistic financial projections</li>
+                        <li>Developing compelling venture proposals</li>
+                        <li>Creating and filming winning pitches</li>
+                    </ul>
+                </div>
+
+                <p><strong>Team-Based Learning:</strong> You'll work in small teams of four to five individuals to develop and assess your own startup, corporate spin-off, or internal venture ideas.</p>
+            </div>
+
+            <div id="outcomes" class="section">
+                <h2>Learning Outcomes</h2>
+                <div class="course-info">
+                    <div class="info-card">
+                        <h4>🧠 Expand Knowledge</h4>
+                        <p>Gain perspective on basic aspects of innovation, ideation, entrepreneurship, and successful business models.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>🚀 Apply Ideas</h4>
+                        <p>Apply fundamental principles of innovation and integrate interdisciplinary coursework to your team's innovative idea.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>🔍 Analyze Critically</h4>
+                        <p>Integrate and apply models of innovation, strategy, problem solving, and critical thinking to assess feasibility and value propositions.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>📋 Synthesize</h4>
+                        <p>Compile a comprehensive business questionnaire and short film pitch to synthesize knowledge, analysis, and application.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>🌍 Global Connections</h4>
+                        <p>Examine innovation and entrepreneurship globally, understanding international interdependence and opportunities.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="policies" class="section">
+                <h2>Academic Policies & Expectations</h2>
+                
+                <h3>Course Expectations</h3>
+                <div class="highlight">
+                    <h4>Leadership & Self-Motivation</h4>
+                    <p>You are Eller professionals and are expected to take leadership roles and be self-motivated. Arrive prepared for every class session and be ready to participate actively.</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>Class Preparation</h4>
+                    <p>Complete all assigned viewing/listening/reading materials <u>in advance of class</u> as they form the basis for discussions, exercises, and group work.</p>
+                </div>
+
+                <h3>Attendance Policy</h3>
+                <p>Attendance is normally expected when we are scheduled to meet. If you cannot attend regularly, please email the instructor.</p>
+                
+                <h4>Excused Absences:</h4>
+                <ul>
+                    <li>All holidays or special events observed by organized religions (with religious affiliation)</li>
+                    <li>Absences pre-approved by the UA Dean of Students</li>
+                </ul>
+
+                <h3>Electronic Devices Policy</h3>
+                <div class="warning">
+                    <p><strong>Cell phones must be turned off and stored</strong> during class. Use of phones, smartphones, chat apps, social media, or laptop browsing is not allowed and will significantly impact your participation grade.</p>
+                </div>
+
+                <h3>Academic Integrity</h3>
+                <div class="warning">
+                    <p>Academic dishonesty will not be tolerated. All exams, quizzes, and assignments must be completed individually unless specifically stated otherwise. Information sharing about assessments will be considered cheating.</p>
+                </div>
+
+                <p><strong>Resources:</strong></p>
+                <ul>
+                    <li><a href="http://policy.web.arizona.edu/threatening-behavior-students" target="_blank">Threatening Behavior Policy</a></li>
+                    <li><a href="http://policy.arizona.edu/human-resources/nondiscrimination-and-anti-harassment-policy" target="_blank">Nondiscrimination Policy</a></li>
+                    <li><a href="http://deanofstudents.arizona.edu/codeofacademicintegrity" target="_blank">Code of Academic Integrity</a></li>
+                    <li><a href="http://drc.arizona.edu/instructors/syllabus-statement" target="_blank">Students with Disabilities</a></li>
+                </ul>
+            </div>
+
+            <div id="grading" class="section">
+                <h2>Grading & Assessments</h2>
+                <div class="warning">
+                    <p><strong>Important:</strong> All grades are final, and there will NOT be opportunities for extra credit.</p>
+                </div>
+
+                <table class="grading-table">
+                    <thead>
+                        <tr>
+                            <th>Assessment Category</th>
+                            <th>Points</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3" style="background: #f8f9fa; font-weight: bold;">Individual Deliverables (40%)</td>
+                        </tr>
+                        <tr>
+                            <td>Participation, Contribution, Attendance & Prosocial Behaviors</td>
+                            <td>Up to 140</td>
+                            <td>14%</td>
+                        </tr>
+                        <tr>
+                            <td>Quizzes (13 × 20 points)</td>
+                            <td>Up to 260</td>
+                            <td>26%</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="background: #f8f9fa; font-weight: bold;">Group Deliverables (60%)</td>
+                        </tr>
+                        <tr>
+                            <td>#1 Developing Your Idea and UVP</td>
+                            <td>Up to 100</td>
+                            <td>10%</td>
+                        </tr>
+                        <tr>
+                            <td>#2 Mini Pitch</td>
+                            <td>Up to 40</td>
+                            <td>4%</td>
+                        </tr>
+                        <tr>
+                            <td>#3 Validation Research</td>
+                            <td>Up to 80</td>
+                            <td>8%</td>
+                        </tr>
+                        <tr>
+                            <td>#4 Pro Forma Financials</td>
+                            <td>Up to 100</td>
+                            <td>10%</td>
+                        </tr>
+                        <tr>
+                            <td>#5 Short Film Pitch</td>
+                            <td>Up to 200</td>
+                            <td>20%</td>
+                        </tr>
+                        <tr>
+                            <td>#6 Idea Questionnaire</td>
+                            <td>Up to 80</td>
+                            <td>8%</td>
+                        </tr>
+                        <tr style="background: #e3f2fd; font-weight: bold;">
+                            <td>TOTAL</td>
+                            <td>1000 points</td>
+                            <td>100%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Assessment Details</h3>
+                
+                <h4>A) Participation & Attendance (14%)</h4>
+                <p>Active participation in class and group work is essential. This includes in-class exercises, disposition, prosocial behaviors, and active contribution to the learning environment.</p>
+
+                <h4>B) Quizzes (26%)</h4>
+                <div class="info-card">
+                    <ul>
+                        <li>14 online quizzes (20 points each), lowest score dropped</li>
+                        <li>12 minutes per quiz (1 minute per question)</li>
+                        <li>Once started, must be completed - no pausing</li>
+                        <li>Time limit is strict - system records 0 if overtime</li>
+                        <li><strong>No makeup quizzes allowed</strong></li>
+                    </ul>
+                </div>
+
+                <h4>C) Group Innovation Project (60%)</h4>
+                <p>Teams will complete milestone deliverables throughout the course to develop a viable business venture. The best film pitches will screen at the McGuire Short Film Festival.</p>
+            </div>
+
+            <div id="schedule" class="section">
+                <h2>Course Schedule</h2>
+                <div class="warning">
+                    <p><strong>Note:</strong> This syllabus is subject to change to better meet your learning needs. Changes will be announced in class.</p>
+                </div>
+
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Week/Date</th>
+                            <th>Topics</th>
+                            <th>Readings & Deliverables</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="week-header">
+                            <td><strong>Week 1</strong><br>Aug 25</td>
+                            <td><strong>Practicing Entrepreneurship</strong>
+                                <ul>
+                                    <li>Introduction & purpose</li>
+                                    <li>Introduction to innovation</li>
+                                    <li>Venture ideation and team formation</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Read syllabus</li>
+                                    <li>Familiarize with D2L</li>
+                                    <li>Form Groups</li>
+                                    <li>Read Chapter 1</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="week-header">
+                            <td><strong>Week 2</strong><br>Sep 1</td>
+                            <td><strong>Labor Day - No Class</strong></td>
+                            <td>Enjoy!</td>
+                        </tr>
+                        <tr class="week-header">
+                            <td><strong>Week 2</strong><br>Sep 8</td>
+                            <td><strong>Activating an Entrepreneurial Mindset</strong>
+                                <ul>
+                                    <li>Innovation workshop: Making things better</li>
+                                    <li>Invention vs. innovation</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Chapter 2</li>
+                                    <li>Other readings in D2L</li>
+                                    <li>Quiz #1 & #2</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="week-header">
+                            <td><strong>Week 3</strong><br>Sep 15</td>
+                            <td><strong>Facilitating Social Entrepreneurship</strong>
+                                <ul>
+                                    <li>Solving Wicked Problems</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Chapter 3</li>
+                                    <li>Other readings in D2L</li>
+                                    <li>Quiz #3</li>
+                                    <li><strong>Deliverable #1 due Sunday</strong></li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="week-header">
+                            <td><strong>Week 4</strong><br>Sep 15</td>
+                            <td><strong>Creating and Recognizing New Opportunities</strong>
+                                <ul>
+                                    <li>Opportunity recognition</li>
+                                    <li>Four pathways to opportunity generation</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Chapter 4</li>
+                                    <li>Other readings in D2L</li>
+                                    <li>Quiz #4</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="week-header">
+                            <td><strong>Week 5</strong><br>Sep 22</td>
+                            <td><strong>Using Design Thinking</strong>
+                                <ul>
+                                    <li>Design Thinking as a Human Centered Process</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Chapter 5</li>
+                                    <li>Other readings in D2L</li>
+                                    <li>Quiz #5</li>
+                                    <li><strong>Deliverable #2 Mini Pitch in-class</strong></li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="week-header">
+                            <td><strong>Week 6</strong><br>Sep 29</td>
+                            <td><strong>Building Business Models</strong>
+                                <ul>
+                                    <li>Defining the business model</li>
+                                    <li>Business Model Canvas</li>
+                                    <li>The Value Proposition</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Chapter 6</li>
+                                    <li>Other readings in D2L</li>
+                                    <li>Quiz #6</li>
+                                    <li><strong>Business Model Canvas workshop</strong></li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="week-header">
+                            <td><strong>Week 7</strong><br>Oct 6</td>
+                            <td><strong>Developing Your Customers & Testing Ideas</strong>
+                                <ul>
+                                    <li>Prototyping</li>
+                                    <li>Design validation research</li>
+                                    <li>Collecting and analyzing results</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Chapters 7 & 8</li>
+                                    <li>Other readings in D2L</li>
+                                    <li>Quiz #7 & #8</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="week-header">
+                            <td><strong>Week 8</strong><br>Oct 13</td>
+                            <td><strong>Developing Networks and Building Teams</strong>
+                                <ul>
+                                    <li>The value of networks</li>
+                                    <li>Different ways of building networks</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Chapter 9</li>
+                                    <li>Quiz #9</li>
+                                    <li><strong>Storyboard workshop</strong></li>
+                                    <li><strong>Deliverable #3 due Sunday</strong></li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="week-header">
+                            <td><strong>Week 9</strong><br>Oct 20</td>
+                            <td><strong>Spring Break - No Class</strong></td>
+                            <td>Enjoy!</td>
+                        </tr>
+                        <tr class="week-header">
+                            <td><strong>Week 10</strong><br>Oct 27</td>
+                            <td><strong>Creating Revenue Models</strong>
+                                <ul>
+                                    <li>The Revenue Model</li>
+                                    <li>Pricing Strategies</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Chapter 10</li>
+                                    <li>Quiz #10</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="week-header">
+                            <td><strong>Week 11</strong><br>Nov 3</td>
+                            <td><strong>Anticipating Failure</strong>
+                                <ul>
+                                    <li>Reasons for failure</li>
+                                    <li>Learning from failure</li>
+                                    <li>The value of "grit"</li>
+                                </ul>
+                            </td>
+                            <td>
